@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BillBuddies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">BillBuddies</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-house-door"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-plus-circle"></i> Add Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recent-activity.html"><i class="bi bi-clock-history"></i> Recent Activity</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="groups.html"><i class="bi bi-people"></i> Groups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="invite-user.html"><i class="bi bi-person-plus"></i> Invite User</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> User Name
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../index.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Balance Summary -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0">Balance Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total Balance</span>
+                            <span class="fw-bold text-success">₹2,500</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>You are owed</span>
+                            <span class="fw-bold text-success">₹3,500</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>You owe</span>
+                            <span class="fw-bold text-danger">₹1,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Groups -->
+            <div class="col-md-8 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Active Groups</h5>
+                        <button class="btn btn-primary btn-sm"><i class="bi bi-gear"></i> Manage Groups</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="group-details.html" class="list-group-item list-group-item-action group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Manali Trip</h6>
+                                    <small>₹5,000</small>
+                                </div>
+                                <p class="mb-1">9 members • Last activity 2 hours ago</p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Office Lunch</h6>
+                                    <small>₹1,200</small>
+                                </div>
+                                <p class="mb-1">5 members • Last activity 1 day ago</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- You are owed -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0">You are owed</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">Rahul Sharma</h6>
+                                        <small class="text-muted">Manali Trip</small>
+                                    </div>
+                                    <span class="text-success">₹1,500</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">Priya Patel</h6>
+                                        <small class="text-muted">Office Lunch</small>
+                                    </div>
+                                    <span class="text-success">₹800</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- You owe -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0">You owe</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">Amit Kumar</h6>
+                                        <small class="text-muted">Manali Trip</small>
+                                    </div>
+                                    <span class="text-danger">₹600</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">Neha Singh</h6>
+                                        <small class="text-muted">Office Lunch</small>
+                                    </div>
+                                    <span class="text-danger">₹400</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html> 

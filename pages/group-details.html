@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Details - BillBuddies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">BillBuddies</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recent-activity.html"><i class="bi bi-clock-history"></i> Recent Activity</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="groups.html"><i class="bi bi-people"></i> Groups</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="invite-user.html"><i class="bi bi-person-plus"></i> Invite User</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> User Name
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../index.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Group Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-1">Manali Trip</h4>
+                                <p class="text-muted mb-0">Created 2 days ago</p>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#viewUsersModal">
+                                    <i class="bi bi-people"></i> View Users
+                                </button>
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#manageUsersModal">
+                                    <i class="bi bi-pencil-square"></i> Manage Users
+                                </button>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                                    <i class="bi bi-plus-circle"></i> Add Expense
+                                </button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#settleUpModal">
+                                    <i class="bi bi-cash"></i> Settle Up
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group Content -->
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-8">
+                <!-- Transaction List -->
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <strong>Transactions</strong>
+                    </div>
+                    <div class="card-body p-0 scroll-transactions" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Expense</th>
+                                    <th>Total Amount</th>
+                                    <th>My Share</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionList">
+                                <!-- Transactions will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-4">
+                <!-- Group Summary -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <strong>Summary</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span>Total you paid for</span>
+                            <span class="float-end fw-bold" id="summary-paid">₹360.00</span>
+                        </div>
+                        <div class="mb-2">
+                            <span>Your total share</span>
+                            <span class="float-end fw-bold" id="summary-share">₹180.00</span>
+                        </div>
+                        <div class="mb-2">
+                            <span>Total change in balance</span>
+                            <span class="float-end fw-bold text-danger" id="summary-balance">- ₹24.50</span>
+                        </div>
+                        <div class="mb-2">
+                            <span>Payments made</span>
+                            <span class="float-end fw-bold" id="summary-made">₹0.00</span>
+                        </div>
+                        <div class="mb-2">
+                            <span>Payments received</span>
+                            <span class="float-end fw-bold" id="summary-received">₹204.50</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Settlements Table -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <strong>Settlements</strong>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm table-bordered mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Payer</th>
+                                    <th>Payee</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="settlementList">
+                                <!-- Settlements will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal fade" id="addMemberModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Members</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMemberForm">
+                        <div class="mb-3">
+                            <label class="form-label">Search and Select Members</label>
+                            <select class="form-select" id="memberSearch" data-live-search="true">
+                                <option value="">Search users...</option>
+                                <option value="1">Rahul Sharma (rahul.sharma)</option>
+                                <option value="2">Priya Patel (priya.patel)</option>
+                                <option value="3">Amit Kumar (amit.kumar)</option>
+                                <option value="4">Neha Singh (neha.singh)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Selected Members</label>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Member</th>
+                                            <th>Shares</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="selectedMembers">
+                                        <!-- Will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMembers()">Add Members</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div class="modal fade" id="addExpenseModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Add an expense</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addExpenseForm">
+                        <div class="mb-3">
+                            <label class="form-label">Expense Name</label>
+                            <input type="text" class="form-control" name="description" placeholder="Enter a description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" name="amount" placeholder="₹ 0.00" min="0" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Expense Date</label>
+                            <input type="datetime-local" class="form-control" name="exp_date" id="exp_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Paid By</label>
+                            <div id="paidByMultiSelect">
+                                <!-- Dynamic paid by inputs -->
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Split By</label>
+                            <select class="form-select" name="split_by" id="split_by" required>
+                                <option value="equally">Equally</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 d-none" id="customSplitSection">
+                            <label class="form-label">Custom Split (per member)</label>
+                            <div id="customSplitInputs" class="row g-2">
+                                <!-- Custom split inputs will be rendered here -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" form="addExpenseForm">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settle Up Modal -->
+    <div class="modal fade" id="settleUpModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Settle Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Who pays whom</h6>
+                            <form id="settleUpForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Payer</label>
+                                    <select class="form-select" name="payer" id="settlePayer">
+                                        <option value="1">Rahul Sharma</option>
+                                        <option value="2">Priya Patel</option>
+                                        <option value="3">Amit Kumar</option>
+                                        <option value="4">Neha Singh</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Payee</label>
+                                    <select class="form-select" name="payee" id="settlePayee">
+                                        <option value="2">Priya Patel</option>
+                                        <option value="1">Rahul Sharma</option>
+                                        <option value="3">Amit Kumar</option>
+                                        <option value="4">Neha Singh</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Amount</label>
+                                    <input type="number" class="form-control" name="amount" id="settleAmount" min="1" step="0.01" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date</label>
+                                    <input type="date" class="form-control" name="date" id="settleDate" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Users Modal -->
+    <div class="modal fade" id="viewUsersModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title">View Users</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Shares</th>
+                                <th>Outstanding</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viewUsersList">
+                            <!-- Users will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Users Modal -->
+    <div class="modal fade" id="manageUsersModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Manage Users</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Shares</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manageUsersList">
+                            <!-- Users will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="../assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for searchable dropdown
+            $('#memberSearch').select2({
+                dropdownParent: $('#addMemberModal'),
+                placeholder: 'Search users...',
+                allowClear: true
+            });
+
+            // Handle member selection
+            $('#memberSearch').on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                if (selectedOption.val()) {
+                    addMemberToTable(selectedOption.val(), selectedOption.text());
+                    $(this).val('').trigger('change'); // Reset selection
+                }
+            });
+        });
+
+        function addMemberToTable(id, name) {
+            const tbody = $('#selectedMembers');
+            const existingRow = tbody.find(`tr[data-member-id="${id}"]`);
+            
+            if (existingRow.length === 0) {
+                const tr = $('<tr>').attr('data-member-id', id);
+                tr.html(`
+                    <td>${name}</td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm" 
+                               name="shares_${id}" value="1" min="1" max="10">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger" 
+                                onclick="removeMember(${id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `);
+                tbody.append(tr);
+            }
+        }
+
+        function removeMember(id) {
+            $(`tr[data-member-id="${id}"]`).remove();
+        }
+
+        function saveMembers() {
+            // TODO: Implement save members functionality
+            $('#addMemberModal').modal('hide');
+        }
+
+        // Set default date for expense
+        $(document).on('show.bs.modal', '#addExpenseModal', function () {
+            const now = new Date();
+            const local = now.toISOString().slice(0,16);
+            $('#exp_date').val(local);
+        });
+
+        // Populate Paid By with multi-select and amount input
+        const groupMembers = [
+            {id: 1, name: 'Rahul Sharma'},
+            {id: 2, name: 'Priya Patel'},
+            {id: 3, name: 'Amit Kumar'},
+            {id: 4, name: 'Neha Singh'}
+        ];
+        function renderPaidByInputs() {
+            const container = $('#paidByMultiSelect');
+            container.empty();
+            groupMembers.forEach(m => {
+                container.append(`
+                    <div class="input-group mb-2">
+                        <div class="input-group-text">
+                            <input type="checkbox" class="form-check-input mt-0 paid-by-checkbox" value="${m.id}" data-name="${m.name}">
+                        </div>
+                        <span class="input-group-text flex-grow-1">${m.name}</span>
+                        <input type="number" class="form-control paid-by-amount" placeholder="Amount" min="0" step="0.01" disabled>
+                    </div>
+                `);
+            });
+        }
+        $(document).on('show.bs.modal', '#addExpenseModal', function () {
+            renderPaidByInputs();
+        });
+        // Enable/disable amount input based on checkbox
+        $(document).on('change', '.paid-by-checkbox', function() {
+            const amountInput = $(this).closest('.input-group').find('.paid-by-amount');
+            amountInput.prop('disabled', !this.checked);
+            if (!this.checked) amountInput.val('');
+        });
+
+        // Handle Split By
+        $('#split_by').on('change', function() {
+            if ($(this).val() === 'custom') {
+                $('#customSplitSection').removeClass('d-none');
+                const container = $('#customSplitInputs');
+                container.empty();
+                groupMembers.forEach(m => {
+                    container.append(`
+                        <div class="col-6">
+                            <label class="form-label">${m.name}</label>
+                            <input type="number" class="form-control" name="custom_share_${m.id}" min="0" step="0.01" value="0">
+                        </div>
+                    `);
+                });
+            } else {
+                $('#customSplitSection').addClass('d-none');
+            }
+        });
+
+        // Sample transactions with details
+        const sampleTransactions = [
+            {
+                date: '2025-06-06',
+                expense: 'Lunch',
+                total: 800,
+                myShare: 200,
+                paidBy: [
+                    {name: 'Rahul Sharma', amount: 400},
+                    {name: 'Priya Patel', amount: 400}
+                ],
+                split: [
+                    {name: 'Rahul Sharma', share: 200},
+                    {name: 'Priya Patel', share: 200},
+                    {name: 'Amit Kumar', share: 200},
+                    {name: 'Neha Singh', share: 200}
+                ],
+                comment: 'Great lunch!'
+            },
+            {
+                date: '2025-06-05',
+                expense: 'Hotel',
+                total: 3200,
+                myShare: 800,
+                paidBy: [
+                    {name: 'Amit Kumar', amount: 3200}
+                ],
+                split: [
+                    {name: 'Rahul Sharma', share: 800},
+                    {name: 'Priya Patel', share: 800},
+                    {name: 'Amit Kumar', share: 800},
+                    {name: 'Neha Singh', share: 800}
+                ],
+                comment: ''
+            },
+            {
+                date: '2025-06-04',
+                expense: 'Cab',
+                total: 1200,
+                myShare: 300,
+                paidBy: [
+                    {name: 'Neha Singh', amount: 1200}
+                ],
+                split: [
+                    {name: 'Rahul Sharma', share: 300},
+                    {name: 'Priya Patel', share: 300},
+                    {name: 'Amit Kumar', share: 300},
+                    {name: 'Neha Singh', share: 300}
+                ],
+                comment: 'Airport drop.'
+            }
+        ];
+        function renderTransactions() {
+            const tbody = $('#transactionList');
+            tbody.empty();
+            sampleTransactions.forEach((t, idx) => {
+                // Calculate paidByMe
+                let paidByMe = 0;
+                t.paidBy.forEach(p => { if (p.name === 'Rahul Sharma') paidByMe += p.amount; }); // Replace with current user
+                const myShare = t.split.find(s => s.name === 'Rahul Sharma')?.share || 0; // Replace with current user
+                const diff = paidByMe - myShare;
+                let statusLine = '';
+                let lentLine = '';
+                if (diff > 0) {
+                    statusLine = `<span class='text-success'>You get back ₹${diff.toFixed(2)}</span>`;
+                    lentLine = `<span class='text-success'>You lent: ₹${paidByMe.toFixed(2)}</span>`;
+                } else if (diff < 0) {
+                    statusLine = `<span class='text-danger'>You owe ₹${Math.abs(diff).toFixed(2)}</span>`;
+                } else {
+                    statusLine = `<span class='text-muted'>Settled</span>`;
+                }
+                tbody.append(`
+                    <tr>
+                        <td>${t.date}</td>
+                        <td>${t.expense}</td>
+                        <td>₹${t.total.toFixed(2)}</td>
+                        <td>₹${t.myShare.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-info view-details-btn" data-idx="${idx}">View</button>
+                            <button class="btn btn-sm btn-outline-primary ms-1 edit-expense-btn" data-idx="${idx}">Edit</button>
+                        </td>
+                    </tr>
+                    <tr class="details-row d-none" id="details-row-${idx}">
+                        <td colspan="5">
+                            <div class="p-3 bg-light border rounded">
+                                <div class="mb-2"><strong>Total Amount:</strong> ₹${t.total.toFixed(2)}</div>
+                                <div class="mb-2"><strong>My Share:</strong> ₹${myShare.toFixed(2)}</div>
+                                <div class="mb-2">${statusLine}</div>
+                                ${lentLine}
+                                <strong>Paid By:</strong>
+                                <ul>
+                                    ${t.paidBy.map(p => `<li>${p.name}: ₹${p.amount.toFixed(2)}</li>`).join('')}
+                                </ul>
+                                <strong>Split Among:</strong>
+                                <ul>
+                                    ${t.split.map(s => `<li>${s.name}: ₹${s.share.toFixed(2)}</li>`).join('')}
+                                </ul>
+                                <div class="mb-2">
+                                    <strong>Comment:</strong>
+                                    <span class="comment-text">${t.comment ? t.comment : '<em>No comment</em>'}</span>
+                                    <button class="btn btn-link btn-sm edit-comment-btn" data-idx="${idx}">Add/Edit Comment</button>
+                                </div>
+                                <div class="edit-comment-box d-none mt-2">
+                                    <textarea class="form-control mb-2" rows="2">${t.comment || ''}</textarea>
+                                    <button class="btn btn-primary btn-sm save-comment-btn" data-idx="${idx}">Save</button>
+                                    <button class="btn btn-secondary btn-sm cancel-comment-btn">Cancel</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        $(document).ready(function() {
+            renderTransactions();
+            // Toggle details
+            $('#transactionList').on('click', '.view-details-btn', function() {
+                const idx = $(this).data('idx');
+                $(`#details-row-${idx}`).toggleClass('d-none');
+            });
+            // Edit comment
+            $('#transactionList').on('click', '.edit-comment-btn', function() {
+                const row = $(this).closest('.details-row');
+                row.find('.edit-comment-box').removeClass('d-none');
+                row.find('.comment-text, .edit-comment-btn').hide();
+            });
+            // Cancel comment
+            $('#transactionList').on('click', '.cancel-comment-btn', function() {
+                const row = $(this).closest('.details-row');
+                row.find('.edit-comment-box').addClass('d-none');
+                row.find('.comment-text, .edit-comment-btn').show();
+            });
+            // Save comment
+            $('#transactionList').on('click', '.save-comment-btn', function() {
+                const idx = $(this).data('idx');
+                const row = $(this).closest('.details-row');
+                const newComment = row.find('textarea').val();
+                sampleTransactions[idx].comment = newComment;
+                renderTransactions();
+                $(`#details-row-${idx}`).removeClass('d-none');
+            });
+        });
+
+        // Settlement data
+        let settlements = [
+            {payer: 'Rahul Sharma', payee: 'Priya Patel', amount: 100, date: '2025-06-07'},
+            {payer: 'Amit Kumar', payee: 'Neha Singh', amount: 50, date: '2025-06-06'}
+        ];
+        function renderSettlements() {
+            const tbody = $('#settlementList');
+            tbody.empty();
+            settlements.forEach((s, idx) => {
+                tbody.append(`
+                    <tr>
+                        <td>${s.payer}</td>
+                        <td>${s.payee}</td>
+                        <td>₹${parseFloat(s.amount).toFixed(2)}</td>
+                        <td>${s.date}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light border dropdown-toggle p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item settlement-edit-btn" href="#" data-idx="${idx}"><i class="bi bi-pencil"></i> Edit</a></li>
+                                    <li><a class="dropdown-item settlement-delete-btn text-danger" href="#" data-idx="${idx}"><i class="bi bi-trash"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        $(document).ready(function() {
+            renderSettlements();
+        });
+        // Settlement edit/delete events
+        $('#settlementList').on('click', '.settlement-edit-btn', function(e) {
+            e.preventDefault();
+            const idx = $(this).data('idx');
+            editingSettlementIdx = idx;
+            const s = settlements[idx];
+            $('#settlePayer').val(groupUsers.find(u => u.name === s.payer)?.id || 1);
+            $('#settlePayee').val(groupUsers.find(u => u.name === s.payee)?.id || 2);
+            $('#settleAmount').val(s.amount);
+            $('#settleDate').val(s.date);
+            $('#settleUpModal').modal('show');
+        });
+        $('#settlementList').on('click', '.settlement-delete-btn', function(e) {
+            e.preventDefault();
+            const idx = $(this).data('idx');
+            if (confirm('Delete this settlement?')) {
+                settlements.splice(idx, 1);
+                renderSettlements();
+            }
+        });
+        $(document).on('show.bs.modal', '#settleUpModal', function () {
+            // Set default date
+            const today = new Date().toISOString().slice(0,10);
+            $('#settleDate').val(today);
+        });
+        // Handle settle up form submit
+        $('#settleUpForm').off('submit').on('submit', function(e) {
+            e.preventDefault();
+            const payer = groupUsers.find(u => u.id == $('#settlePayer').val()).name;
+            const payee = groupUsers.find(u => u.id == $('#settlePayee').val()).name;
+            const amount = $('#settleAmount').val();
+            const date = $('#settleDate').val();
+            if (editingSettlementIdx !== null) {
+                settlements[editingSettlementIdx] = {payer, payee, amount, date};
+                editingSettlementIdx = null;
+            } else {
+                settlements.push({payer, payee, amount, date});
+            }
+            renderSettlements();
+            this.reset();
+            $('#settleUpModal').modal('hide');
+        });
+
+        // Sample users
+        let groupUsers = [
+            {id: 1, name: 'Rahul Sharma', mobile: '9876543210', email: 'rahul@example.com', shares: 1, outstanding: 120.5},
+            {id: 2, name: 'Priya Patel', mobile: '9123456780', email: 'priya@example.com', shares: 2, outstanding: -80.0},
+            {id: 3, name: 'Amit Kumar', mobile: '9988776655', email: 'amit@example.com', shares: 1, outstanding: 0.0},
+            {id: 4, name: 'Neha Singh', mobile: '9001122334', email: 'neha@example.com', shares: 1, outstanding: 50.0}
+        ];
+        // Render View Users
+        function renderViewUsers() {
+            const tbody = $('#viewUsersList');
+            tbody.empty();
+            groupUsers.forEach(u => {
+                tbody.append(`
+                    <tr>
+                        <td>${u.name}</td>
+                        <td>${u.mobile}</td>
+                        <td>${u.email}</td>
+                        <td>${u.shares}</td>
+                        <td>${u.outstanding >= 0 ? '<span class="text-success">₹' + u.outstanding.toFixed(2) + '</span>' : '<span class="text-danger">₹' + u.outstanding.toFixed(2) + '</span>'}</td>
+                    </tr>
+                `);
+            });
+        }
+        $(document).on('show.bs.modal', '#viewUsersModal', renderViewUsers);
+        // Render Manage Users
+        function renderManageUsers() {
+            const tbody = $('#manageUsersList');
+            tbody.empty();
+            groupUsers.forEach((u, idx) => {
+                tbody.append(`
+                    <tr data-idx="${idx}">
+                        <td>${u.name}</td>
+                        <td>${u.mobile}</td>
+                        <td>${u.email}</td>
+                        <td>
+                            <span class="shares-text">${u.shares}</span>
+                            <input type="number" class="form-control form-control-sm shares-input d-none" value="${u.shares}" min="1" style="width:80px;display:inline-block;">
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary edit-shares-btn">Edit</button>
+                            <button class="btn btn-sm btn-success save-shares-btn d-none">Save</button>
+                            <button class="btn btn-sm btn-secondary cancel-shares-btn d-none">Cancel</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+        $(document).on('show.bs.modal', '#manageUsersModal', renderManageUsers);
+        // Inline shares edit logic
+        $('#manageUsersList').on('click', '.edit-shares-btn', function() {
+            const row = $(this).closest('tr');
+            row.find('.shares-text').hide();
+            row.find('.shares-input').removeClass('d-none');
+            row.find('.edit-shares-btn').hide();
+            row.find('.save-shares-btn, .cancel-shares-btn').removeClass('d-none');
+        });
+        $('#manageUsersList').on('click', '.cancel-shares-btn', function() {
+            const row = $(this).closest('tr');
+            row.find('.shares-input').addClass('d-none');
+            row.find('.shares-text').show();
+            row.find('.edit-shares-btn').show();
+            row.find('.save-shares-btn, .cancel-shares-btn').addClass('d-none');
+        });
+        $('#manageUsersList').on('click', '.save-shares-btn', function() {
+            const row = $(this).closest('tr');
+            const idx = row.data('idx');
+            const newShares = parseInt(row.find('.shares-input').val());
+            if (newShares > 0) {
+                groupUsers[idx].shares = newShares;
+                renderManageUsers();
+            }
+        });
+
+        // Track edit state
+        let editingExpenseIdx = null;
+        let editingSettlementIdx = null;
+        // Transactions Edit Button
+        $('#transactionList').on('click', '.edit-expense-btn', function() {
+            const idx = $(this).data('idx');
+            editingExpenseIdx = idx;
+            const t = sampleTransactions[idx];
+            // Prefill Add Expense Modal
+            $("#addExpenseForm")[0].reset();
+            $("#addExpenseForm [name='description']").val(t.expense);
+            $("#addExpenseForm [name='amount']").val(t.total);
+            $("#addExpenseForm [name='exp_date']").val(t.date + 'T12:00');
+            // Paid By
+            renderPaidByInputs();
+            setTimeout(() => {
+                t.paidBy.forEach(p => {
+                    $("#paidByMultiSelect .paid-by-checkbox").each(function() {
+                        if ($(this).data('name') === p.name) {
+                            $(this).prop('checked', true);
+                            $(this).closest('.input-group').find('.paid-by-amount').prop('disabled', false).val(p.amount);
+                        }
+                    });
+                });
+            }, 100);
+            // Split By
+            if (t.split.every(s => s.share === t.split[0].share)) {
+                $("#split_by").val('equally').trigger('change');
+            } else {
+                $("#split_by").val('custom').trigger('change');
+                setTimeout(() => {
+                    t.split.forEach(s => {
+                        $("#customSplitInputs input[name='custom_share_" + groupMembers.find(m => m.name === s.name).id + "']").val(s.share);
+                    });
+                }, 200);
+            }
+            $('#addExpenseModal').modal('show');
+        });
+        // Add Expense Save/Edit
+        $('#addExpenseForm').off('submit').on('submit', function(e) {
+            e.preventDefault();
+            // For demo, just update description and amount
+            if (editingExpenseIdx !== null) {
+                sampleTransactions[editingExpenseIdx].expense = $("#addExpenseForm [name='description']").val();
+                sampleTransactions[editingExpenseIdx].total = parseFloat($("#addExpenseForm [name='amount']").val());
+                sampleTransactions[editingExpenseIdx].date = $("#addExpenseForm [name='exp_date']").val().slice(0,10);
+                // Paid By
+                let paidByArr = [];
+                $("#paidByMultiSelect .paid-by-checkbox:checked").each(function() {
+                    const name = $(this).data('name');
+                    const amount = parseFloat($(this).closest('.input-group').find('.paid-by-amount').val()) || 0;
+                    paidByArr.push({name, amount});
+                });
+                sampleTransactions[editingExpenseIdx].paidBy = paidByArr;
+                // Split
+                let splitArr = [];
+                if ($('#split_by').val() === 'equally') {
+                    const share = sampleTransactions[editingExpenseIdx].total / groupMembers.length;
+                    groupMembers.forEach(m => splitArr.push({name: m.name, share}));
+                } else {
+                    groupMembers.forEach(m => {
+                        const val = parseFloat($("#customSplitInputs input[name='custom_share_" + m.id + "']").val()) || 0;
+                        splitArr.push({name: m.name, share: val});
+                    });
+                }
+                sampleTransactions[editingExpenseIdx].split = splitArr;
+                editingExpenseIdx = null;
+            }
+            renderTransactions();
+            $('#addExpenseModal').modal('hide');
+        });
+    </script>
+    <style>
+    .scroll-transactions {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    </style>
+</body>
+</html> 
